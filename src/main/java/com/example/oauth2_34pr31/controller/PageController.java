@@ -24,4 +24,9 @@ public class PageController {
         m.addAttribute("provider", provider);
         return "securedPage";
     }
+
+    @GetMapping("/login/oauth2")
+    public String loginPage() {
+        return "loginPage";
+    }
 }

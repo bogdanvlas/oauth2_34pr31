@@ -13,6 +13,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").permitAll()
                 .antMatchers("/secured/**").authenticated()
                 .and()
-                .oauth2Login();
+                .oauth2Login()
+                .loginPage("/login/oauth2");
     }
 }

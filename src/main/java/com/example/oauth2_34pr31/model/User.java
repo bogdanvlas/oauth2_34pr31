@@ -18,6 +18,6 @@ public class User {
 
     //юзернейм или емейл
     private String login;
-
+    //github, google, ...
     private String provider;
 }

@@ -5,27 +5,27 @@ import com.example.oauth2_34pr31.model.UserInfo;
 import com.example.oauth2_34pr31.model.UserInfoFactory;
 import com.example.oauth2_34pr31.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
+import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
-import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class CustomOAuth2UserService extends DefaultOAuth2UserService {
+public class CustomOidcUserService extends OidcUserService {
     private UserRepository userRepository;
     private UserInfoFactory userInfoFactory;
+
     @Override
-    public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        OAuth2User oauth2User =  super.loadUser(userRequest);
+    public OidcUser loadUser(OidcUserRequest userRequest) throws OAuth2AuthenticationException {
+        OidcUser oauth2User = super.loadUser(userRequest);
         String provider = userRequest.getClientRegistration().getRegistrationId();
 
         UserInfo userInfo = userInfoFactory.create(provider, oauth2User.getAttributes());
 
-        boolean exists= userRepository.existsByLoginAndProvider(userInfo.getLogin(), provider);
-        if(!exists){
+        boolean exists = userRepository.existsByLoginAndProvider(userInfo.getLogin(), provider);
+        if (!exists) {
             User user = new User();
             user.setLogin(userInfo.getLogin());
             user.setProvider(provider);
